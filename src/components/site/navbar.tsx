@@ -41,11 +41,11 @@ export function Navbar() {
         <nav className="mx-auto max-w-[1400px] px-5 lg:px-10 flex items-center justify-between gap-4">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2.5 group">
-            <div className="relative w-11 h-11 rounded-full overflow-hidden shadow-soft ring-1 ring-white/40 group-hover:ring-white/80 transition-all duration-500 shrink-0">
+            <div className="relative w-12 h-12 shrink-0 transition-transform duration-500 group-hover:scale-105">
               <img
                 src="/brand/brand-logo.png"
                 alt="HR Furniture logo"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
               />
             </div>
             <div className="flex flex-col leading-none">

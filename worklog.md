@@ -173,3 +173,41 @@ Stage Summary:
 - Original SVG monogram removed completely.
 - All favicons regenerated from the user's logo via sharp with cover-fit.
 - OG image re-rendered to include the new logo in the top-left of the social sharing card.
+
+---
+Task ID: revision-4
+Agent: super-z (main)
+Task: Remove the black background from the logo and all favicons.
+
+Work Log:
+- Wrote scripts/remove-bg.py using PIL to do pixel-level background removal:
+  - For each pixel, calculated luminance via 0.299R + 0.587G + 0.114B.
+  - Pixels with luminance ≤ 18 → fully transparent (alpha=0).
+  - Pixels with luminance between 18 and 60 → linearly fade alpha from 0 to 255 and slightly lighten the RGB to avoid dark halos on bright backgrounds.
+  - Pixels above 60 → kept fully opaque.
+- Generated /public/brand/logo-transparent.png (500x500 RGBA, 83KB) — clean edges, no leftover black halo (verified via VLM with checkerboard composite).
+- Rewrote scripts/gen-favicons.js to use the transparent PNG as source with sharp `fit: 'contain'` and transparent background:
+  - Generated 11 PNG favicons (16–1024px) — all transparent.
+  - favicon.ico (32x32 PNG with alpha — modern browsers accept this format).
+  - brand-logo.png (256x256 transparent) for navbar/footer.
+  - og-monogram.png (128x128 transparent) for OG image.
+  - apple-touch-icon.png — composited on solid walnut #3E2A20 background because iOS requires opaque icons. Logo is centered with 20px padding.
+- Removed the old logo-original.jpg-derived raster favicons (replaced by transparent versions).
+- Updated src/components/site/navbar.tsx: removed the circular container (rounded-full + overflow-hidden + ring), now using `object-contain` with `drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]` so the logo's transparent areas show the background through. Logo size increased from w-11 h-11 to w-12 h-12.
+- Updated src/components/site/footer.tsx: same swap, logo size w-14 h-14 with stronger drop-shadow for the dark footer background.
+- Updated scripts/og-image.html: removed the .monogram's black background, border-radius, and box-shadow; replaced with `object-contain` + `filter: drop-shadow(...)`. Logo size increased from 72x72 to 80x80.
+- Re-rendered /public/og-image.png (1200x630, 763KB) — logo now floats cleanly on the dark espresso background with no black rectangle around it.
+- Verified via Agent Browser + VLM:
+  - Original logo transparent PNG: clean edges, no dark halo, sofa + HR letters fully visible ✓
+  - favicon-32.png: transparent background ✓
+  - brand-logo.png: transparent background ✓
+  - apple-touch-icon.png: solid walnut background (opaque, as required by iOS) ✓
+  - Navbar on hero: logo transparent, blends with the hero image background ✓
+  - Footer: logo transparent, blends with the dark footer ✓
+  - OG image: logo transparent, sits cleanly on the dark espresso background ✓
+
+Stage Summary:
+- All logos and favicons now have transparent backgrounds (except Apple touch icon which is intentionally composited on walnut for iOS compliance).
+- Navbar and footer updated to use object-contain + drop-shadow instead of the previous circular crop.
+- OG image re-rendered with the transparent logo.
+- Source: /public/brand/logo-transparent.png (master) → all derivatives via scripts/gen-favicons.js.
