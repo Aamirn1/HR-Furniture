@@ -72,8 +72,8 @@ export const metadata: Metadata = {
       { url: "/brand/favicon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/brand/favicon-48.png", sizes: "48x48", type: "image/png" },
       { url: "/brand/favicon-96.png", sizes: "96x96", type: "image/png" },
+      { url: "/brand/favicon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/brand/favicon.ico", sizes: "any" },
-      { url: "/brand/favicon.svg", type: "image/svg+xml" },
     ],
     shortcut: ["/brand/favicon.ico"],
     apple: [
@@ -141,8 +141,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Fallback icon link tags (Next.js metadata usually handles this, but extra guarantees) */}
-        <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/brand/favicon.ico" sizes="any" />
+        <link rel="icon" href="/brand/favicon-32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/brand/favicon-192.png" type="image/png" sizes="192x192" />
         <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>

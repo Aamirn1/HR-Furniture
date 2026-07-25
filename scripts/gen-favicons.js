@@ -1,41 +1,52 @@
-// Generate PNG favicons at multiple sizes from the SVG monogram using sharp.
+// Generate PNG favicons at multiple sizes from the user's uploaded logo.
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const SVG = '/home/z/my-project/public/brand/monogram.svg';
+const SRC = '/home/z/my-project/public/brand/logo-original.jpg';
 const OUT_DIR = '/home/z/my-project/public/brand';
 
 const sizes = [16, 32, 48, 64, 96, 128, 180, 192, 256, 512, 1024];
-const svgBuffer = fs.readFileSync(SVG);
 
 (async () => {
+  // 1. Standard square favicons — cover-fit the source so it fills the square
   for (const s of sizes) {
     const out = path.join(OUT_DIR, `favicon-${s}.png`);
-    await sharp(svgBuffer, { density: 384 })
-      .resize(s, s, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    await sharp(SRC)
+      .resize(s, s, { fit: 'cover', position: 'center' })
       .png()
       .toFile(out);
     console.log(`OK  ${s}x${s}  -> ${path.basename(out)}`);
   }
 
-  // favicon.ico (multi-size) — sharp can write an ICO via ico plugin, but we'll just save a 32x32 PNG named favicon.ico
-  // Actually let's just save a single 32x32 png and rename to .ico — modern browsers accept PNG-format .ico
-  const icoOut = path.join(OUT_DIR, 'favicon.ico');
-  await sharp(svgBuffer, { density: 384 })
-    .resize(32, 32, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  // 2. favicon.ico (32x32 PNG — modern browsers accept PNG-format .ico)
+  await sharp(SRC)
+    .resize(32, 32, { fit: 'cover', position: 'center' })
     .png()
-    .toFile(icoOut);
+    .toFile(path.join(OUT_DIR, 'favicon.ico'));
   console.log(`OK  favicon.ico (32x32 PNG)`);
 
-  // Apple touch icon (180x180 with white background)
-  const appleOut = path.join(OUT_DIR, 'apple-touch-icon.png');
-  await sharp(svgBuffer, { density: 384 })
-    .resize(180, 180, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
-    .flatten({ background: '#FFFFFF' })
+  // 3. apple-touch-icon.png — 180x180 with the logo on a white background
+  //    (Apple requires opaque icons; the original is on black so we keep the black background)
+  await sharp(SRC)
+    .resize(180, 180, { fit: 'cover', position: 'center' })
     .png()
-    .toFile(appleOut);
+    .toFile(path.join(OUT_DIR, 'apple-touch-icon.png'));
   console.log(`OK  apple-touch-icon.png (180x180)`);
 
-  console.log('\nDone.');
+  // 4. Brand logo for navbar — larger format, original aspect (1:1)
+  await sharp(SRC)
+    .resize(256, 256, { fit: 'cover', position: 'center' })
+    .png()
+    .toFile(path.join(OUT_DIR, 'brand-logo.png'));
+  console.log(`OK  brand-logo.png (256x256 for navbar)`);
+
+  // 5. OG image logo — 64x64 small monogram for OG banner
+  await sharp(SRC)
+    .resize(128, 128, { fit: 'cover', position: 'center' })
+    .png()
+    .toFile(path.join(OUT_DIR, 'og-monogram.png'));
+  console.log(`OK  og-monogram.png (128x128 for OG image)`);
+
+  console.log('\nDone. Files in:', OUT_DIR);
 })().catch(e => { console.error('ERR', e); process.exit(1); });

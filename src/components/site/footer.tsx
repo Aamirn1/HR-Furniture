@@ -60,12 +60,11 @@ export function Footer() {
       <div className="relative mx-auto max-w-[1400px] px-5 lg:px-10 py-14 lg:py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 lg:gap-10">
         {/* Brand */}
         <div className="col-span-2 lg:col-span-2">
-          <div className="flex items-center gap-2.5 mb-4">
-            <div className="relative w-11 h-11 rounded-full overflow-hidden shadow-soft ring-1 ring-white/20">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-soft ring-1 ring-white/25 shrink-0">
               <img
-                src="/brand/monogram.svg"
-                alt=""
-                aria-hidden="true"
+                src="/brand/brand-logo.png"
+                alt="HR Furniture logo"
                 className="w-full h-full object-cover"
               />
             </div>

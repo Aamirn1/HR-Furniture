@@ -144,3 +144,32 @@ Stage Summary:
 - Professional images: 21 AI-generated photographs across hero, categories, featured collection, gallery, before/after, and CTA background.
 - OG image: 1200x630 designed banner with brand, headline, stats, CTA — works on WhatsApp, Facebook, Twitter, LinkedIn.
 - For Vercel deployment: user sets NEXT_PUBLIC_SITE_URL env var to their domain (or updates the placeholder in layout.tsx line 41) — all OG/Twitter URLs will then resolve to their domain automatically.
+
+---
+Task ID: revision-3
+Agent: super-z (main)
+Task: Use the user's uploaded WhatsApp image (HR logo with sofa) as the logo and favicon for the entire site.
+
+Work Log:
+- Inspected the uploaded file: /home/z/my-project/upload/WhatsApp Image 2026-07-25 at 12.15.47 PM.jpeg — 500x500 JPEG, black background with white "H" + gold "R" + a small cream sofa illustration beneath. Suitable for a luxury furniture brand.
+- Copied the original to /home/z/my-project/public/brand/logo-original.jpg as the master source.
+- Rewrote scripts/gen-favicons.js to use sharp with cover-fit on the user's JPG (instead of the previous SVG monogram).
+- Generated 11 PNG favicons (16/32/48/64/96/128/180/192/256/512/1024), favicon.ico (32x32 PNG), apple-touch-icon.png (180x180), brand-logo.png (256x256 for navbar/footer use), and og-monogram.png (128x128).
+- Removed the old SVG monogram.svg and favicon.svg from /public/brand/ since the user's logo is raster, not vector.
+- Updated src/app/layout.tsx: removed the SVG icon entry, added 192x192 PNG to the icon list, updated the <head> fallback links to use PNG + ICO only.
+- Updated src/components/site/navbar.tsx: swapped the <img src="/brand/monogram.svg"> for <img src="/brand/brand-logo.png"> with proper alt text. Increased logo size from w-10 h-10 to w-11 h-11 to better show the logo detail. Added ring-white/40 (was ring-white/30) for better visibility against the dark hero background.
+- Updated src/components/site/footer.tsx: same swap, increased logo size from w-11 h-11 to w-12 h-12 for footer prominence.
+- Updated scripts/og-image.html: replaced the CSS-styled "HR" text monogram with an <img src="brand-logo.png"> inside the .monogram container (now 72x72 with overflow:hidden + black background + object-fit:cover). Copied the logo alongside the HTML for file:// rendering.
+- Re-rendered the OG image at /public/og-image.png (1200x630, 762KB) via Agent Browser screenshot. The new logo is now visible in the top-left of the OG banner alongside the "HR Furniture / Premium Sofas" wordmark.
+- Verified via VLM:
+  - Navbar (top of hero): circular logo with "HR" letters visible in top-left ✓
+  - Footer: circular logo with gold "HR" visible in top-left of brand column ✓
+  - OG image: logo visible in top-left corner of social sharing banner ✓
+- Verified all assets serve HTTP 200: favicon.ico (993 bytes), brand-logo.png (29KB), apple-touch-icon.png (15KB), favicon-32.png (993 bytes).
+- Verified the browser's loaded favicon link tags all point to /brand/favicon-*.png (no stale SVG references).
+
+Stage Summary:
+- User's uploaded WhatsApp logo now used everywhere: navbar, footer, OG image, all favicon sizes (16–1024px), Apple touch icon, PWA manifest icons, and the social sharing banner.
+- Original SVG monogram removed completely.
+- All favicons regenerated from the user's logo via sharp with cover-fit.
+- OG image re-rendered to include the new logo in the top-left of the social sharing card.
