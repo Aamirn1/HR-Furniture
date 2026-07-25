@@ -91,11 +91,11 @@ export const metadata: Metadata = {
       "Premium sofas designed for comfort, elegance, and timeless interiors. Hand-built by master upholsterers. Explore our luxury collections and custom sofa configurator.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "HR Furniture — Crafted Living. For Beautiful Interiors.",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },
@@ -104,7 +104,7 @@ export const metadata: Metadata = {
     title: "HR Furniture — Crafted For Beautiful Living",
     description:
       "Premium sofas designed for comfort, elegance, and timeless interiors. Hand-built by master upholsterers.",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
     creator: "@hrfurniture",
   },
   robots: {
