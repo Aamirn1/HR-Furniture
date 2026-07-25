@@ -211,3 +211,18 @@ Stage Summary:
 - Navbar and footer updated to use object-contain + drop-shadow instead of the previous circular crop.
 - OG image re-rendered with the transparent logo.
 - Source: /public/brand/logo-transparent.png (master) → all derivatives via scripts/gen-favicons.js.
+
+---
+Task ID: revision-5
+Agent: super-z (main)
+Task: Increase the size of the logo and move it slightly down by 2-4 points.
+
+Work Log:
+- Navbar logo: increased from w-12 h-12 (48px) to w-16 h-16 (64px) — 33% larger.
+- Added translate-y-[3px] to nudge the logo 3 points (px) downward within its flex container, creating a subtle optical adjustment that better aligns the logo's visual center with the wordmark baseline.
+- Footer logo: same treatment — increased from w-14 h-14 (56px) to w-16 h-16 (64px), with translate-y-[3px] for visual consistency.
+- Verified via VLM: logo is now clearly larger and commands more visual prominence in the navbar; the wordmark "HR Furniture / PREMIUM SOFAS" remains optically aligned next to it.
+
+Stage Summary:
+- Logo size: 48px → 64px (navbar), 56px → 64px (footer).
+- Both logos translated 3px down for subtle optical adjustment.

@@ -61,7 +61,7 @@ export function Footer() {
         {/* Brand */}
         <div className="col-span-2 lg:col-span-2">
           <div className="flex items-center gap-3 mb-4">
-            <div className="relative w-14 h-14 shrink-0">
+            <div className="relative w-16 h-16 shrink-0 translate-y-[3px]">
               <img
                 src="/brand/brand-logo.png"
                 alt="HR Furniture logo"
