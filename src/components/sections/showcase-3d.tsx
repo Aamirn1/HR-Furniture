@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, ContactShadows, OrbitControls, Float } from '@react-three/drei'
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { motion } from 'framer-motion'
 import { RotateCw, ZoomIn, Palette, Ruler, Move } from 'lucide-react'
@@ -75,7 +75,7 @@ function Scene({ fabricColor, woodColor }: { fabricColor: string; woodColor: str
   return (
     <Canvas shadows dpr={[1, 2]} gl={{ antialias: true, alpha: true }} style={{ background: 'transparent' }}>
       <ambientLight intensity={0.4} />
-      <directionalLight position={[4, 6, 4]} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} />
+      <directionalLight position={[4, 6, 4]} intensity={1.4} castShadow shadow-mapSize={[1024, 1024]} />
       <spotLight position={[-4, 4, 2]} intensity={0.5} angle={0.5} penumbra={1} color="#f5e7c8" />
       <Suspense fallback={null}>
         <Float speed={1.4} rotationIntensity={0.05} floatIntensity={0.18}>
@@ -101,6 +101,26 @@ function Scene({ fabricColor, woodColor }: { fabricColor: string; woodColor: str
 export function Showcase3D() {
   const [fabric, setFabric] = useState(fabricSwatches[0])
   const [wood, setWood] = useState(woodSwatches[0])
+  const [shouldRender3D, setShouldRender3D] = useState(false)
+  const stageRef = useRef<HTMLDivElement | null>(null)
+
+  // Lazy-load the 3D Canvas only when the section enters the viewport.
+  // This prevents Three.js (a ~600KB library) from loading on initial page load.
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setShouldRender3D(true)
+          obs.disconnect()
+        }
+      },
+      { rootMargin: '200px 0px' }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
 
   return (
     <section id="showcase-3d" className="relative py-24 lg:py-32 bg-gradient-to-b from-[#1a1614] via-[#221c18] to-[#1a1614] text-white overflow-hidden">
@@ -124,6 +144,7 @@ export function Showcase3D() {
         <div className="grid lg:grid-cols-[1fr_360px] gap-6 lg:gap-8 items-stretch">
           {/* 3D Stage */}
           <motion.div
+            ref={stageRef}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -132,7 +153,14 @@ export function Showcase3D() {
           >
             {/* Floor reflection hint */}
             <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#d8b36a]/8 to-transparent pointer-events-none" />
-            <Scene fabricColor={fabric.color} woodColor={wood.color} />
+            {/* 3D Canvas — only rendered when section enters viewport (defers ~600KB Three.js load) */}
+            {shouldRender3D ? (
+              <Scene fabricColor={fabric.color} woodColor={wood.color} />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#d8b36a]/20 to-[#c88a5a]/10 animate-pulse" />
+              </div>
+            )}
 
             {/* Floating control hints */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">

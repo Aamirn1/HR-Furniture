@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Search, ShoppingBag, Phone, MessageCircle } from 'lucide-react'
+import { Menu, X, Search, ShoppingBag, Phone, MessageCircle, ArrowRight } from 'lucide-react'
 import { navLinks, siteConfig } from '@/lib/site-data'
 import { cn } from '@/lib/utils'
 
@@ -217,7 +217,7 @@ export function Navbar() {
                       <span className="font-heading text-[20px] text-[#1d1d1d] group-hover:text-[#7a5230] transition-colors">
                         {link.label}
                       </span>
-                      <span className="font-numeric text-[11px] text-[#5e5e5e]">0{i + 1}</span>
+                      <ArrowRight className="w-4 h-4 text-[#5e5e5e]/60 group-hover:text-[#7a5230] group-hover:translate-x-1 transition-all" strokeWidth={1.5} />
                     </motion.a>
                   ))}
                 </div>

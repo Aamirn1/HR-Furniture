@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Inter, Playfair_Display, Poppins, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -33,13 +34,38 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 // ─── IMPORTANT ──────────────────────────────────────────────────────────
-// Change this to your real production domain after deploying to Vercel.
-// All Open Graph / Twitter Card URLs are resolved against this base.
+// The site URL is resolved dynamically so OG/Twitter image URLs always
+// point to the actual serving domain (localhost in dev, your Vercel URL
+// in preview/prod). To override, set NEXT_PUBLIC_SITE_URL in your env.
 // ─────────────────────────────────────────────────────────────────────────
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hr-furniture.vercel.app";
+async function getSiteUrl(): Promise<string> {
+  // 1. Explicit env var wins (set this in Vercel for production)
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  }
+  // 2. Otherwise, derive from the current request host
+  try {
+    const headersList = await headers();
+    const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+    const protocol = headersList.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
+    return `${protocol}://${host}`;
+  } catch {
+    // 3. Fallback during static generation
+    return "https://hr-furniture.vercel.app";
+  }
+}
+
+const siteUrl = await getSiteUrl();
+
+// Force dynamic so the OG metadata always reflects the current request host
+// (prevents cached placeholder URLs from being served on different domains)
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: siteUrl,
+  },
   title: {
     default: "HR Furniture — Premium Sofas & Living Furniture",
     template: "%s · HR Furniture",
@@ -64,9 +90,6 @@ export const metadata: Metadata = {
   applicationName: "HR Furniture",
   category: "Furniture",
   keywordsAlt: ["sofa maker", "furniture store", "luxury interior"],
-  alternates: {
-    canonical: "/",
-  },
   icons: {
     icon: [
       { url: "/brand/favicon-32.png", sizes: "32x32", type: "image/png" },
