@@ -246,3 +246,29 @@ Stage Summary:
 - All 158 files (source + 41 brand/product/scene images + favicons + OG image) are pushed.
 - README documents the project for future contributors and Vercel deployment.
 - Token has been removed from git config to prevent accidental leakage.
+
+---
+Task ID: revision-7
+Agent: super-z (main)
+Task: Use JPG format for WhatsApp OG image.
+
+Work Log:
+- Wrote scripts/og-to-jpg.js to convert og-image.png → og-image.jpg using sharp with mozjpeg quality 90, progressive encoding.
+- Generated /public/og-image.jpg (1200x630, 79.2 KB) — 89.4% smaller than the original 745 KB PNG.
+- VLM verification confirmed the JPG is high quality: logo visible, headline crisp, stats readable, no compression artifacts.
+- Updated src/app/layout.tsx:
+  - openGraph.images[0].url: /og-image.png → /og-image.jpg
+  - openGraph.images[0].type: image/png → image/jpeg
+  - twitter.images: /og-image.png → /og-image.jpg
+- Verified served metadata:
+  - og-image.jpg returns HTTP 200, 81KB, content-type: image/jpeg
+  - og:image meta tag: https://hr-furniture.vercel.app/og-image.jpg
+  - og:image:type: image/jpeg
+  - twitter:image: https://hr-furniture.vercel.app/og-image.jpg
+- Committed (f6e2bc2) and pushed to GitHub origin/main.
+
+Stage Summary:
+- OG image is now JPG (79KB vs 745KB PNG) — WhatsApp/Facebook/Twitter will fetch and render the preview significantly faster.
+- All OpenGraph and Twitter Card metadata updated to reference the JPG with the correct image/jpeg MIME type.
+- Original PNG kept on disk for backward compatibility, but not referenced by metadata.
+- Change pushed to https://github.com/Aamirn1/HR-Furniture.
