@@ -3,16 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Calendar, Sparkles } from 'lucide-react'
-import dynamic from 'next/dynamic'
-
-const HeroScene = dynamic(() => import('@/components/three/hero-scene').then(m => m.HeroScene), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#7a5230]/10 to-[#d8b36a]/10 animate-pulse" />
-    </div>
-  ),
-})
+import Image from 'next/image'
 
 // Split-letter text reveal
 function SplitText({ text, className, delay = 0 }: { text: string; className?: string; delay?: number }) {
@@ -53,9 +44,9 @@ export function Hero() {
     offset: ['start start', 'end start'],
   })
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200])
+  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+  const scaleBg = useTransform(scrollYProgress, [0, 1], [1.05, 1.18])
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92])
   const textY = useTransform(scrollYProgress, [0, 1], [0, -80])
 
   useEffect(() => {
@@ -64,49 +55,51 @@ export function Hero() {
   }, [])
 
   return (
-    <section id="home" ref={ref} className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#fafaf8] via-white to-[#fafaf8]">
-      {/* Soft floating gradient blobs */}
+    <section id="home" ref={ref} className="relative min-h-screen overflow-hidden bg-[#1a1614]">
+      {/* Background image with parallax + scale on scroll */}
       <motion.div
-        className="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full opacity-50 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle, rgba(216, 179, 106, 0.45) 0%, transparent 70%)',
-        }}
-        animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-      />
+        style={{ y: yBg, scale: scaleBg }}
+        className="absolute inset-0 z-[1]"
+      >
+        <Image
+          src="/hero/living-room.jpg"
+          alt="Luxury living room with a cream boucle sofa, walnut floors, and natural daylight"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </motion.div>
+
+      {/* Gradient overlays for text readability — left-darker so the headline stays crisp */}
+      <div className="absolute inset-0 z-[2] bg-gradient-to-r from-[#1a1614]/85 via-[#1a1614]/55 to-transparent" />
+      <div className="absolute inset-0 z-[2] bg-gradient-to-t from-[#1a1614]/90 via-transparent to-[#1a1614]/35" />
+
+      {/* Subtle grain for editorial feel */}
+      <div className="absolute inset-0 z-[3] grain pointer-events-none opacity-60" />
+
+      {/* Soft champagne glow that drifts */}
       <motion.div
-        className="absolute top-1/3 -right-32 w-[520px] h-[520px] rounded-full opacity-40 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle, rgba(200, 138, 90, 0.4) 0%, transparent 70%)',
-        }}
+        className="absolute top-1/4 -right-32 w-[520px] h-[520px] rounded-full opacity-30 blur-3xl z-[2] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(216, 179, 106, 0.45) 0%, transparent 70%)' }}
         animate={{ y: [0, -30, 0], x: [0, -20, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
       />
 
-      {/* Top grain line + dust */}
-      <div className="absolute inset-0 grain pointer-events-none" />
-
-      {/* 3D Scene — pinned background */}
-      <motion.div
-        style={{ y, opacity, scale }}
-        className="absolute inset-0 z-[1]"
-      >
-        <HeroScene />
-      </motion.div>
-
-      {/* White initial-load overlay that fades to reveal the scene */}
+      {/* White initial-load overlay that fades to reveal the image */}
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: loaded ? 0 : 1 }}
-        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        className="absolute inset-0 z-[5] bg-white pointer-events-none"
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        className="absolute inset-0 z-[8] bg-[#fafaf8] pointer-events-none"
       />
+      {/* Top reveal sweep line */}
       <motion.div
         initial={{ opacity: 1, scaleX: 1 }}
         animate={{ scaleX: 0 }}
         transition={{ duration: 1.4, ease: [0.77, 0, 0.18, 1] }}
         style={{ originX: 1 }}
-        className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#7a5230] via-[#d8b36a] to-transparent z-[6]"
+        className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#7a5230] via-[#d8b36a] to-transparent z-[9]"
       />
 
       {/* Foreground content */}
@@ -120,19 +113,19 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#7a5230]/20 bg-white/60 backdrop-blur-sm mb-5 pointer-events-auto"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/25 bg-white/10 backdrop-blur-md mb-5 pointer-events-auto"
           >
             <Sparkles className="w-3 h-3 text-[#d8b36a]" />
-            <span className="text-[11px] font-button tracking-[0.18em] uppercase text-[#5e5e5e]">
+            <span className="text-[11px] font-button tracking-[0.18em] uppercase text-white/85">
               Premium Sofas · Since 2009
             </span>
           </motion.div>
 
-          {/* Headline */}
-          <h1 className="font-heading text-[40px] leading-[1.02] sm:text-[56px] md:text-[72px] lg:text-[92px] xl:text-[108px] font-semibold text-[#1d1d1d] tracking-[-0.02em] max-w-[14ch]">
+          {/* Headline — white on dark overlay for contrast */}
+          <h1 className="font-heading text-[40px] leading-[1.02] sm:text-[56px] md:text-[72px] lg:text-[92px] xl:text-[108px] font-semibold text-white tracking-[-0.02em] max-w-[14ch] drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]">
             <SplitText text="Crafted" delay={0.6} />
             <br />
-            <span className="italic text-gradient-walnut font-medium">
+            <span className="italic text-gradient-gold font-medium">
               <SplitText text="For Beautiful" delay={0.95} />
             </span>
             <br />
@@ -144,7 +137,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.8 }}
-            className="mt-5 max-w-md text-[14px] md:text-[15px] leading-relaxed text-[#5e5e5e] font-sans text-pretty pointer-events-auto"
+            className="mt-5 max-w-md text-[14px] md:text-[15px] leading-relaxed text-white/80 font-sans text-pretty pointer-events-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
           >
             Premium sofas designed for comfort, elegance, and timeless interiors. Each piece is hand-built by master upholsterers in our workshop.
           </motion.p>
@@ -158,16 +151,16 @@ export function Hero() {
           >
             <a
               href="#collections"
-              className="group inline-flex items-center gap-2.5 h-12 pl-6 pr-5 rounded-full bg-[#3e2a20] text-white text-[13px] font-button font-medium tracking-wide hover:bg-[#6a4530] transition-all duration-300 hover:shadow-luxury"
+              className="group inline-flex items-center gap-2.5 h-12 pl-6 pr-5 rounded-full bg-[#d8b36a] text-[#1a1614] text-[13px] font-button font-semibold tracking-wide hover:bg-[#e6c588] transition-all duration-300 hover:shadow-luxury"
             >
               Explore Collection
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={2} />
             </a>
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2.5 h-12 pl-6 pr-5 rounded-full bg-white border border-[#7a5230]/20 text-[#1d1d1d] text-[13px] font-button font-medium tracking-wide hover:border-[#7a5230] hover:bg-[#fafaf8] transition-all duration-300"
+              className="group inline-flex items-center gap-2.5 h-12 pl-6 pr-5 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white text-[13px] font-button font-medium tracking-wide hover:bg-white/20 hover:border-white/60 transition-all duration-300"
             >
-              <Calendar className="w-4 h-4 text-[#7a5230]" strokeWidth={1.5} />
+              <Calendar className="w-4 h-4 text-[#d8b36a]" strokeWidth={1.5} />
               Book Consultation
             </a>
           </motion.div>
@@ -178,7 +171,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 2.2 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 pointer-events-auto border-t border-[#7a5230]/12 pt-6"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 pointer-events-auto border-t border-white/15 pt-6"
         >
           {[
             { k: '15+', v: 'Years of Craft' },
@@ -187,10 +180,10 @@ export function Hero() {
             { k: '10y', v: 'Frame Warranty' },
           ].map((s) => (
             <div key={s.v} className="flex flex-col">
-              <span className="font-numeric text-[26px] md:text-[34px] font-medium text-[#3e2a20] tracking-tight">
+              <span className="font-numeric text-[26px] md:text-[34px] font-medium text-white tracking-tight">
                 {s.k}
               </span>
-              <span className="text-[11px] font-button tracking-[0.16em] uppercase text-[#5e5e5e] mt-1">
+              <span className="text-[11px] font-button tracking-[0.16em] uppercase text-white/65 mt-1">
                 {s.v}
               </span>
             </div>
@@ -206,7 +199,7 @@ export function Hero() {
         className="hidden xl:flex absolute bottom-8 right-8 z-10 flex-col items-center gap-2 pointer-events-none"
         style={{ opacity }}
       >
-        <span className="text-[10px] font-button tracking-[0.2em] uppercase text-[#5e5e5e] rotate-90 origin-center whitespace-nowrap">Scroll</span>
+        <span className="text-[10px] font-button tracking-[0.2em] uppercase text-white/70 rotate-90 origin-center whitespace-nowrap">Scroll</span>
       </motion.div>
     </section>
   )

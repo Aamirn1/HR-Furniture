@@ -53,3 +53,38 @@ Stage Summary:
 - Single-page architecture anchored by section IDs (since only `/` route is user-visible in this environment).
 - Mobile-responsive with touch-friendly navigation and adaptive layouts.
 - Luxury aesthetic with walnut/champagne/terracotta palette and Playfair/Inter/Poppins/Space Grotesk typography.
+
+---
+Task ID: revision-1
+Agent: super-z (main)
+Task: Remove the 3D hero scene slider animation; add a professional background image to the hero section.
+
+Work Log:
+- Tried `z-ai image-search` for luxury living room photography — service returned 0 results across multiple queries and regions.
+- Pivoted to `z-ai image` (image generation) with a detailed editorial prompt: "Luxury modern living room interior with a cream boucle sofa, walnut wood floor, soft natural daylight from large windows, minimalist Scandinavian design, champagne gold accents, potted fiddle leaf fig plant, professional architectural photography, editorial quality, warm and inviting, high-end showroom aesthetic" at 1344x768.
+- Saved generated image to `/home/z/my-project/public/hero/living-room.jpg` (162KB JPEG).
+- VLM verification: image is suitable — luxury living room with cream sofa, marble coffee table, brass accents, fiddle-leaf fig, tall windows with natural daylight.
+- Rewrote `src/components/sections/hero.tsx`:
+  - Removed `dynamic` import of `HeroScene` (React Three Fiber 3D scene).
+  - Added `next/image` `Image` component with `fill` + `object-cover` for the background.
+  - Background uses parallax (`y: 0% → 20%`) and slow scale (`1.05 → 1.18`) tied to scroll progress.
+  - Added two gradient overlays for text readability:
+    * Horizontal: from-[#1a1614]/85 → via-[#1a1614]/55 → transparent (left-darker so headline stays crisp).
+    * Vertical: from-[#1a1614]/90 (bottom) → transparent → from-[#1a1614]/35 (top) for the navbar and stats bar.
+  - Kept the white initial-load overlay + champagne sweep line reveal.
+  - Adjusted text colors: white headline (was dark walnut), white/80 body, gold gradient on "For Beautiful".
+  - Updated eyebrow to glass-dark style (white/10 + backdrop-blur).
+  - Primary CTA now champagne gold (was dark walnut) for contrast against image.
+  - Secondary CTA now glass button (white/10 + border) instead of solid white.
+  - Stats bar border changed to white/15 with white text.
+  - Kept the soft champagne glow blob in the upper-right.
+  - Kept the SplitText letter-by-letter reveal animation.
+- Verified via Agent Browser + VLM: hero now shows the professional living room image with a dark gradient overlay on the left, headline "Crafted For Beautiful Living." in white serif is fully readable, eyebrow badge and CTAs visible, stats bar at bottom.
+- No errors in console; only pre-existing Three.js deprecation warnings (from the still-present interactive 3D showcase section, which was not requested to be removed).
+- Page HTTP 200; hero image serves correctly at /hero/living-room.jpg (162KB).
+
+Stage Summary:
+- 3D sofa slider animation in hero replaced with a professional AI-generated luxury living room photograph.
+- Text content, split-letter reveal, CTAs, stats, and load reveal animation all preserved.
+- Color treatment adjusted for image background (white text on dark gradient overlay).
+- Hero image saved at `/public/hero/living-room.jpg` for easy replacement.
