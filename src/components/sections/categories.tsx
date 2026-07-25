@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import Image from 'next/image'
 import { categories } from '@/lib/site-data'
 import { SectionHeader } from './section-header'
 import { cn } from '@/lib/utils'
@@ -50,39 +51,21 @@ export function Categories() {
               )}
             >
               <div className="aspect-[4/5] relative overflow-hidden">
-                {/* Synthetic "image" gradient backdrop */}
-                <div
-                  className={cn('absolute inset-0 bg-gradient-to-br opacity-95 transition-transform duration-700 group-hover:scale-105', cat.gradient)}
+                {/* Professional interior image */}
+                <Image
+                  src={cat.image}
+                  alt={`${cat.name} — ${cat.blurb}`}
+                  fill
+                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                {/* Soft pattern overlay */}
-                <div
-                  className="absolute inset-0 opacity-20 mix-blend-overlay"
-                  style={{
-                    backgroundImage:
-                      'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.6) 0%, transparent 40%), radial-gradient(circle at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 40%)',
-                  }}
-                />
-                {/* Decorative sofa silhouette via SVG */}
-                <svg
-                  viewBox="0 0 200 160"
-                  className="absolute inset-0 w-full h-full opacity-25 mix-blend-soft-light"
-                  fill="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M30 100 Q30 80 50 78 L150 78 Q170 80 170 100 L170 120 Q170 130 160 130 L40 130 Q30 130 30 120 Z"
-                    fill="white"
-                  />
-                  <rect x="35" y="60" width="20" height="22" rx="4" fill="white" opacity="0.7" />
-                  <rect x="60" y="55" width="22" height="28" rx="4" fill="white" opacity="0.7" />
-                  <rect x="118" y="55" width="22" height="28" rx="4" fill="white" opacity="0.7" />
-                  <rect x="145" y="60" width="20" height="22" rx="4" fill="white" opacity="0.7" />
-                  <line x1="50" y1="130" x2="50" y2="145" stroke="white" strokeWidth="2" />
-                  <line x1="150" y1="130" x2="150" y2="145" stroke="white" strokeWidth="2" />
-                </svg>
+                {/* Bottom-up dark gradient for text legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1614]/85 via-[#1a1614]/15 to-transparent" />
+                {/* Subtle top vignette for tag/count readability */}
+                <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#1a1614]/40 to-transparent" />
 
-                {/* Animated border accent */}
-                <div className="absolute inset-3 rounded-xl border border-white/0 group-hover:border-white/40 transition-all duration-500" />
+                {/* Animated border accent on hover */}
+                <div className="absolute inset-3 rounded-xl border border-white/0 group-hover:border-white/40 transition-all duration-500 pointer-events-none" />
 
                 {/* Tag */}
                 <div className="absolute top-4 left-4">

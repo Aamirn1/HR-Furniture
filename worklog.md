@@ -88,3 +88,59 @@ Stage Summary:
 - Text content, split-letter reveal, CTAs, stats, and load reveal animation all preserved.
 - Color treatment adjusted for image background (white text on dark gradient overlay).
 - Hero image saved at `/public/hero/living-room.jpg` for easy replacement.
+
+---
+Task ID: revision-2
+Agent: super-z (main)
+Task: (1) Logo + favicon. (2) White navbar text on hero. (3) Professional sofa images throughout the site. (4) Fix hero headline spacing ("Living." close to "Crafted"). (5) Professional OG image that works on WhatsApp/Facebook/etc. for Vercel deployment.
+
+Work Log:
+- Designed two SVG brand assets in /public/brand/:
+  - logo.svg — horizontal lockup (monogram + wordmark + tagline + 3 champagne dots).
+  - monogram.svg — rounded-square monogram (HR + cushion swoosh + 3 dots) for favicon use.
+- Generated PNG favicons at 11 sizes (16/32/48/64/96/128/180/192/256/512/1024) using sharp via scripts/gen-favicons.js. Also generated favicon.ico (32x32 PNG) and apple-touch-icon.png (180x180 on white).
+- Created /public/site.webmanifest (PWA manifest with maskable icons + 3 app shortcuts) and /public/browserconfig.xml (Microsoft tile config).
+- Updated robots.txt with sitemap reference.
+- Rewrote src/app/layout.tsx:
+  - Set `metadataBase` to `process.env.NEXT_PUBLIC_SITE_URL ?? "https://hr-furniture.vercel.app"` so all OG/Twitter URLs resolve absolutely.
+  - Added comprehensive `icons` config (svg + ico + 32/48/96 PNG + apple-touch-icon).
+  - Added `openGraph` block with 1200x630 image, locale, site name, full title/description.
+  - Added `twitter` block with `summary_large_image` card + matching image.
+  - Added `viewport` export with theme color.
+  - Added `<link rel="manifest">`, `<link rel="icon">`, `<link rel="apple-touch-icon">` to <head> for explicit fallback.
+- Created 1200x630 OG image at /public/og-image.png by rendering scripts/og-image.html (Playwright + CSS) with:
+  - Brand monogram (top-left), "HAND-BUILT SINCE 2009" pill (top-right).
+  - Headline "Crafted Living." (white serif) + "For Beautiful Interiors." (gold italic) below.
+  - Subhead paragraph describing premium sofas.
+  - Stats row (15+/5000+/600+/10y) and gold "Explore Collection" CTA + hrfurniture.com URL.
+  - Dark espresso gradient with champagne gold accents + grain overlay.
+- Replaced navbar logo (inline HR text) with `<img src="/brand/monogram.svg">` rounded disc.
+- Replaced footer logo with the same SVG monogram.
+- Updated navbar.tsx: text colors now switch from white (transparent state at top of hero) to dark (glass/scrolled state). All icons, the "Book Consultation" button, and mobile menu button follow the same pattern. Button becomes glass-style with white border on hero, solid walnut when scrolled.
+- Fixed hero headline: restructured from "Crafted / For Beautiful / Living." to "Crafted / Living." (close together with leading-[0.98]) followed by "For Beautiful Interiors" as a smaller italic gold tagline below.
+- Generated 21 professional images using z-ai image (1344x768 JPGs):
+  - 6 product images in /public/products/: aspen-lounge, monaco-sectional, hudson-velvet, kyoto-low, savona-recliner, riviera-corner.
+  - 15 interior scene images in /public/scenes/: 7 category scenes (cat-luxury, cat-lshape, cat-sectional, cat-recliner, cat-bedroom, cat-dining, cat-tv-console), 6 gallery scenes (gallery-1 through gallery-6), and 2 before/after scenes (before-empty, after-styled).
+- Updated src/lib/site-data.ts: added `image` field to Category, Product, and GalleryItem types and populated each entry with the corresponding image path.
+- Rewrote Categories component to use `<Image>` from next/image with the cat-* images, with bottom-up dark gradient overlay for text legibility.
+- Rewrote FeaturedCollection component: removed SofaSilhouette SVG, swapped in `<Image>` with product.image, kept hover actions (Quick View/Inquire/Save) and badges.
+- Rewrote Gallery component: removed synthesized gradients + SVG silhouettes, swapped in `<Image>` with item.image, kept masonry layout and hover overlays.
+- Rewrote BeforeAfter Scene component: removed synthesized room illustrations (window/plant/lamp/sofa SVGs), swapped in real before-empty.jpg and after-styled.jpg images via `<Image>`.
+- Enhanced CTA section: added a subtle after-styled.jpg background image at 30% opacity behind the dark walnut gradient for additional depth.
+- Verified via Agent Browser + VLM:
+  - Hero: navbar text is white ✓, headline "Crafted / Living." is grouped with "For Beautiful Interiors" gold italic below ✓, logo (HR monogram + wordmark) visible ✓.
+  - Categories: real interior photos visible in cards ✓.
+  - Featured Collection: real professional sofa product photos visible ✓.
+  - Gallery: real interior photos with city skyline, library, sunroom scenes ✓.
+  - Before/After: real empty room + styled room photos with draggable divider ✓.
+- Verified metadata: og:title, og:description, og:url, og:image (absolute), og:image:width/height, twitter:card, twitter:image all correctly emitted in HTML head. All resolve to https://hr-furniture.vercel.app/* via metadataBase.
+- Verified all brand assets serve correctly: favicon.ico (200), favicon-32.png (200), apple-touch-icon.png (200), og-image.png (200, 762KB), site.webmanifest (200), monogram.svg (200).
+
+Stage Summary:
+- Logo: SVG monogram (HR + cushion swoosh) + horizontal lockup with wordmark and tagline.
+- Favicons: SVG + ICO + 11 PNG sizes + apple-touch-icon + PWA manifest + browserconfig.xml.
+- Navbar: white text/icons on hero, dark on scroll, with new logo.
+- Hero headline: "Crafted / Living." grouped close together, "For Beautiful Interiors" gold italic tagline below.
+- Professional images: 21 AI-generated photographs across hero, categories, featured collection, gallery, before/after, and CTA background.
+- OG image: 1200x630 designed banner with brand, headline, stats, CTA — works on WhatsApp, Facebook, Twitter, LinkedIn.
+- For Vercel deployment: user sets NEXT_PUBLIC_SITE_URL env var to their domain (or updates the placeholder in layout.tsx line 41) — all OG/Twitter URLs will then resolve to their domain automatically.

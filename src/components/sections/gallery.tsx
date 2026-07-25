@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { MapPin, ArrowUpRight } from 'lucide-react'
+import Image from 'next/image'
 import { galleryItems } from '@/lib/site-data'
 import { SectionHeader } from './section-header'
 import { cn } from '@/lib/utils'
@@ -63,35 +64,19 @@ export function Gallery() {
                 sizeClasses[item.size]
               )}
             >
-              {/* Synthesized scene */}
-              <div
-                className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
-                style={{
-                  background: `linear-gradient(135deg, ${item.accent} 0%, #3e2a20 100%)`,
-                }}
+              {/* Professional interior image */}
+              <Image
+                src={item.image}
+                alt={`${item.title} — ${item.collection} collection in ${item.location}`}
+                fill
+                sizes={item.size === 'big' || item.size === 'wide' ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 100vw, 25vw'}
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              {/* Pattern overlay */}
-              <div
-                className="absolute inset-0 opacity-30 mix-blend-overlay"
-                style={{
-                  backgroundImage: `
-                    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.4) 0%, transparent 40%),
-                    radial-gradient(circle at 70% 80%, rgba(255,255,255,0.2) 0%, transparent 50%)
-                  `,
-                }}
-              />
-              {/* Synthesized sofa */}
-              <svg viewBox="0 0 200 100" className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] opacity-50" aria-hidden>
-                <ellipse cx="100" cy="92" rx="80" ry="4" fill="rgba(0,0,0,0.25)" />
-                <rect x="35" y="55" width="130" height="35" rx="6" fill="rgba(255,255,255,0.85)" />
-                <rect x="45" y="60" width="32" height="25" rx="3" fill="rgba(255,255,255,0.65)" />
-                <rect x="84" y="60" width="32" height="25" rx="3" fill="rgba(255,255,255,0.65)" />
-                <rect x="123" y="60" width="32" height="25" rx="3" fill="rgba(255,255,255,0.65)" />
-                <rect x="35" y="48" width="130" height="10" rx="3" fill="rgba(255,255,255,0.55)" />
-              </svg>
+              {/* Bottom gradient for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1614]/85 via-[#1a1614]/10 to-transparent" />
 
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Hover overlay (extra darkening on hover) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               {/* Hover arrow */}
               <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-[#3e2a20] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">

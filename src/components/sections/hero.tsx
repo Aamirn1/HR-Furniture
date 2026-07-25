@@ -121,16 +121,20 @@ export function Hero() {
             </span>
           </motion.div>
 
-          {/* Headline — white on dark overlay for contrast */}
-          <h1 className="font-heading text-[40px] leading-[1.02] sm:text-[56px] md:text-[72px] lg:text-[92px] xl:text-[108px] font-semibold text-white tracking-[-0.02em] max-w-[14ch] drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]">
+          {/* Headline — "Crafted Living." stays grouped, "For Beautiful" sits below as a tagline */}
+          <h1 className="font-heading text-[40px] leading-[0.98] sm:text-[56px] md:text-[72px] lg:text-[92px] xl:text-[108px] font-semibold text-white tracking-[-0.02em] max-w-[14ch] drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]">
             <SplitText text="Crafted" delay={0.6} />
             <br />
-            <span className="italic text-gradient-gold font-medium">
-              <SplitText text="For Beautiful" delay={0.95} />
-            </span>
-            <br />
-            <SplitText text="Living." delay={1.35} />
+            <SplitText text="Living." delay={0.95} />
           </h1>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.35 }}
+            className="block mt-3 font-heading italic text-[20px] sm:text-[26px] md:text-[32px] lg:text-[40px] xl:text-[46px] text-gradient-gold font-medium tracking-[-0.01em] drop-shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
+          >
+            For Beautiful Interiors
+          </motion.span>
 
           {/* Subhead */}
           <motion.p

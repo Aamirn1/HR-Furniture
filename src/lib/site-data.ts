@@ -33,6 +33,7 @@ export type Category = {
   count: number
   gradient: string
   tag: string
+  image: string
 }
 
 export const categories: Category[] = [
@@ -43,6 +44,7 @@ export const categories: Category[] = [
     count: 48,
     gradient: 'from-[#7a5230] to-[#c88a5a]',
     tag: 'Signature',
+    image: '/scenes/cat-luxury.jpg',
   },
   {
     id: 'l-shape',
@@ -51,6 +53,7 @@ export const categories: Category[] = [
     count: 24,
     gradient: 'from-[#3e2a20] to-[#7a5230]',
     tag: 'Modular',
+    image: '/scenes/cat-lshape.jpg',
   },
   {
     id: 'sectionals',
@@ -59,6 +62,7 @@ export const categories: Category[] = [
     count: 36,
     gradient: 'from-[#c88a5a] to-[#d8b36a]',
     tag: 'Family',
+    image: '/scenes/cat-sectional.jpg',
   },
   {
     id: 'recliners',
@@ -67,6 +71,7 @@ export const categories: Category[] = [
     count: 18,
     gradient: 'from-[#7a5230] to-[#3e2a20]',
     tag: 'Comfort',
+    image: '/scenes/cat-recliner.jpg',
   },
   {
     id: 'bedroom',
@@ -75,6 +80,7 @@ export const categories: Category[] = [
     count: 32,
     gradient: 'from-[#3e2a20] to-[#c88a5a]',
     tag: 'Restful',
+    image: '/scenes/cat-bedroom.jpg',
   },
   {
     id: 'dining',
@@ -83,6 +89,7 @@ export const categories: Category[] = [
     count: 27,
     gradient: 'from-[#c88a5a] to-[#7a5230]',
     tag: 'Gather',
+    image: '/scenes/cat-dining.jpg',
   },
   {
     id: 'tv-consoles',
@@ -91,6 +98,7 @@ export const categories: Category[] = [
     count: 14,
     gradient: 'from-[#7a5230] to-[#d8b36a]',
     tag: 'Storage',
+    image: '/scenes/cat-tv-console.jpg',
   },
 ]
 
@@ -106,6 +114,7 @@ export type Product = {
   badge?: string
   accent: string
   blurb: string
+  image: string
 }
 
 export const products: Product[] = [
@@ -121,6 +130,7 @@ export const products: Product[] = [
     badge: 'Bestseller',
     accent: '#d8b36a',
     blurb: 'A sculptural three-seater wrapped in hand-woven ivory boucle, with deep feather-down cushions.',
+    image: '/products/aspen-lounge.jpg',
   },
   {
     id: 'monaco-sectional',
@@ -133,6 +143,7 @@ export const products: Product[] = [
     badge: 'New',
     accent: '#c88a5a',
     blurb: 'A modular L-shape sectional with chaise extension and down-blend seat cushions.',
+    image: '/products/monaco-sectional.jpg',
   },
   {
     id: 'hudson-velvet',
@@ -144,6 +155,7 @@ export const products: Product[] = [
     tone: 'dark',
     accent: '#7a5230',
     blurb: 'Plush emerald-cut velvet over a kiln-dried beech frame with brass sabre legs.',
+    image: '/products/hudson-velvet.jpg',
   },
   {
     id: 'kyoto-low',
@@ -155,6 +167,7 @@ export const products: Product[] = [
     tone: 'light',
     accent: '#c88a5a',
     blurb: 'Low-profile silhouette inspired by Japanese minimalism with hand-stitched seams.',
+    image: '/products/kyoto-low.jpg',
   },
   {
     id: 'savona-recliner',
@@ -167,6 +180,7 @@ export const products: Product[] = [
     badge: 'Engineered',
     accent: '#7a5230',
     blurb: 'Power headrest and footrest in full-grain cognac leather with USB-C integration.',
+    image: '/products/savona-recliner.jpg',
   },
   {
     id: 'riviera-corner',
@@ -178,6 +192,7 @@ export const products: Product[] = [
     tone: 'light',
     accent: '#d8b36a',
     blurb: 'A sweeping corner sofa with removable covers and a deep 92cm seat depth.',
+    image: '/products/riviera-corner.jpg',
   },
 ]
 
@@ -317,17 +332,18 @@ export type GalleryItem = {
   collection: string
   size: 'tall' | 'wide' | 'square' | 'big'
   accent: string
+  image: string
 }
 
 export const galleryItems: GalleryItem[] = [
-  { id: 'g1', title: 'Walnut Living Room', category: 'Living', location: 'Palo Alto, CA', collection: 'Aspen', size: 'big', accent: '#7a5230' },
-  { id: 'g2', title: 'Cream Penthouse', category: 'Interior', location: 'Manhattan, NY', collection: 'Monaco', size: 'tall', accent: '#c88a5a' },
-  { id: 'g3', title: 'Library Corner', category: 'Reading Nook', location: 'Boston, MA', collection: 'Hudson', size: 'square', accent: '#3e2a20' },
-  { id: 'g4', title: 'Sunlit Conservatory', category: 'Sunroom', location: 'Santa Barbara, CA', collection: 'Riviera', size: 'wide', accent: '#d8b36a' },
-  { id: 'g5', title: 'Coastal Retreat', category: 'Vacation Home', location: 'Big Sur, CA', collection: 'Kyoto', size: 'tall', accent: '#c88a5a' },
-  { id: 'g6', title: 'Screening Room', category: 'Media Room', location: 'Aspen, CO', collection: 'Savona', size: 'square', accent: '#7a5230' },
-  { id: 'g7', title: 'Modern Loft', category: 'Loft', location: 'Brooklyn, NY', collection: 'Aspen', size: 'wide', accent: '#3e2a20' },
-  { id: 'g8', title: 'Garden Room', category: 'Sunroom', location: 'Seattle, WA', collection: 'Monaco', size: 'big', accent: '#d8b36a' },
+  { id: 'g1', title: 'Walnut Living Room', category: 'Living', location: 'Palo Alto, CA', collection: 'Aspen', size: 'big', accent: '#7a5230', image: '/scenes/gallery-1.jpg' },
+  { id: 'g2', title: 'Cream Penthouse', category: 'Interior', location: 'Manhattan, NY', collection: 'Monaco', size: 'tall', accent: '#c88a5a', image: '/scenes/gallery-2.jpg' },
+  { id: 'g3', title: 'Library Corner', category: 'Reading Nook', location: 'Boston, MA', collection: 'Hudson', size: 'square', accent: '#3e2a20', image: '/scenes/gallery-3.jpg' },
+  { id: 'g4', title: 'Sunlit Conservatory', category: 'Sunroom', location: 'Santa Barbara, CA', collection: 'Riviera', size: 'wide', accent: '#d8b36a', image: '/scenes/gallery-4.jpg' },
+  { id: 'g5', title: 'Coastal Retreat', category: 'Vacation Home', location: 'Big Sur, CA', collection: 'Kyoto', size: 'tall', accent: '#c88a5a', image: '/scenes/gallery-5.jpg' },
+  { id: 'g6', title: 'Screening Room', category: 'Media Room', location: 'Aspen, CO', collection: 'Savona', size: 'square', accent: '#7a5230', image: '/scenes/cat-recliner.jpg' },
+  { id: 'g7', title: 'Modern Loft', category: 'Loft', location: 'Brooklyn, NY', collection: 'Aspen', size: 'wide', accent: '#3e2a20', image: '/scenes/gallery-1.jpg' },
+  { id: 'g8', title: 'Garden Room', category: 'Sunroom', location: 'Seattle, WA', collection: 'Monaco', size: 'big', accent: '#d8b36a', image: '/scenes/gallery-6.jpg' },
 ]
 
 export type ProcessStep = {

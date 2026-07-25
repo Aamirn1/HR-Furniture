@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Phone, Mail, MapPin, Clock, Send } from 'lucide-react'
+import Image from 'next/image'
 import { siteConfig } from '@/lib/site-data'
 import { SectionHeader } from './section-header'
 
@@ -17,12 +18,24 @@ export function CTA() {
         className="relative mx-auto max-w-[1400px] px-5 lg:px-10"
       >
         <div className="relative overflow-hidden rounded-[2rem] lg:rounded-[2.5rem] bg-gradient-to-br from-[#3e2a20] via-[#1a1614] to-[#3e2a20] px-6 lg:px-16 py-16 lg:py-24">
+          {/* Background lifestyle image (subtle) */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/scenes/after-styled.jpg"
+              alt=""
+              fill
+              sizes="(max-width: 1024px) 100vw, 1400px"
+              className="object-cover opacity-30"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#3e2a20]/85 via-[#1a1614]/80 to-[#3e2a20]/85" />
+          </div>
+
           {/* Decorative gradients */}
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full opacity-50 blur-3xl" style={{ background: 'radial-gradient(circle, rgba(216,179,106,0.5) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-30 blur-3xl" style={{ background: 'radial-gradient(circle, rgba(200,138,90,0.5) 0%, transparent 70%)' }} />
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full opacity-50 blur-3xl z-0" style={{ background: 'radial-gradient(circle, rgba(216,179,106,0.5) 0%, transparent 70%)' }} />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-30 blur-3xl z-0" style={{ background: 'radial-gradient(circle, rgba(200,138,90,0.5) 0%, transparent 70%)' }} />
 
           {/* Subtle pattern */}
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 0.5px, transparent 0.5px), radial-gradient(circle at 80% 30%, white 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }} />
+          <div className="absolute inset-0 opacity-10 z-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 0.5px, transparent 0.5px), radial-gradient(circle at 80% 30%, white 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }} />
 
           <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-16 items-center">
             {/* Left content */}

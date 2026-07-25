@@ -3,15 +3,13 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Eye, Heart, ArrowUpRight } from 'lucide-react'
+import Image from 'next/image'
 import { products, type Product } from '@/lib/site-data'
 import { SectionHeader } from './section-header'
 import { cn } from '@/lib/utils'
 
 function SofaCard({ product, index }: { product: Product; index: number }) {
   const [liked, setLiked] = useState(false)
-
-  // Synthesize a CSS scene for the sofa "image" — luxury studio backdrop
-  const isDark = product.tone === 'dark'
 
   return (
     <motion.article
@@ -24,43 +22,22 @@ function SofaCard({ product, index }: { product: Product; index: number }) {
         index === 0 && 'lg:col-span-2'
       )}
     >
-      {/* Image / synthesized scene */}
+      {/* Product image */}
       <div
         className={cn(
           'relative aspect-[4/3] overflow-hidden',
           index === 0 ? 'lg:aspect-[16/9]' : ''
         )}
       >
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-          style={{
-            background: isDark
-              ? 'linear-gradient(135deg, #2a2018 0%, #1a1410 60%, #2a2018 100%)'
-              : 'linear-gradient(135deg, #f0e9da 0%, #e3d8bf 60%, #f4ede0 100%)',
-          }}
+        <Image
+          src={product.image}
+          alt={`${product.name} — ${product.blurb}`}
+          fill
+          sizes={index === 0 ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        {/* Soft floor reflection */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-1/3"
-          style={{
-            background: isDark
-              ? 'linear-gradient(to top, rgba(216,179,106,0.06), transparent)'
-              : 'linear-gradient(to top, rgba(122,82,48,0.1), transparent)',
-          }}
-        />
-        {/* Decorative ambient light */}
-        <div
-          className="absolute top-0 left-1/4 w-1/2 h-2/3 opacity-50"
-          style={{
-            background: isDark
-              ? 'radial-gradient(ellipse, rgba(216,179,106,0.4) 0%, transparent 70%)'
-              : 'radial-gradient(ellipse, rgba(255,255,255,0.7) 0%, transparent 70%)',
-          }}
-        />
-
-        {/* Synthesized sofa illustration */}
-        <SofaSilhouette color={product.accent} dark={isDark} big={index === 0} />
+        {/* Subtle bottom shadow for badge/CTA readability */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#1a1614]/40 to-transparent" />
 
         {/* Top badges */}
         <div className="absolute top-4 left-4 flex flex-col gap-2">
@@ -134,51 +111,6 @@ function SofaCard({ product, index }: { product: Product; index: number }) {
         </p>
       </div>
     </motion.article>
-  )
-}
-
-// SVG-based sofa silhouette — varies by tone
-function SofaSilhouette({ color, dark, big }: { color: string; dark: boolean; big?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 400 220"
-      className="absolute inset-x-0 bottom-0 mx-auto w-full h-full transition-transform duration-700 group-hover:scale-[1.04]"
-      style={{ transformOrigin: 'bottom center', filter: dark ? 'drop-shadow(0 -8px 24px rgba(216,179,106,0.18))' : 'drop-shadow(0 -8px 24px rgba(62,42,32,0.18))' }}
-      aria-hidden
-    >
-      {/* Sofa shadow */}
-      <ellipse cx="200" cy="200" rx="160" ry="10" fill={dark ? 'rgba(216,179,106,0.18)' : 'rgba(62,42,32,0.2)'} />
-
-      {/* Body */}
-      <path
-        d="M70 130 Q70 95 100 92 L300 92 Q330 95 330 130 L330 175 Q330 185 320 185 L80 185 Q70 185 70 175 Z"
-        fill={color}
-        opacity="0.95"
-      />
-      {/* Cushions */}
-      <rect x="85" y="105" width="70" height="60" rx="10" fill={color} opacity="0.85" />
-      <rect x="165" y="105" width="70" height="60" rx="10" fill={color} opacity="0.85" />
-      <rect x="245" y="105" width="70" height="60" rx="10" fill={color} opacity="0.85" />
-      {/* Backrest pillows */}
-      <rect x="85" y="85" width="70" height="30" rx="8" fill={color} opacity="0.7" />
-      <rect x="165" y="82" width="70" height="33" rx="8" fill={color} opacity="0.7" />
-      <rect x="245" y="85" width="70" height="30" rx="8" fill={color} opacity="0.7" />
-      {/* Arms */}
-      <path d="M55 110 Q55 90 75 88 L75 175 L55 175 Z" fill={color} opacity="0.9" />
-      <path d="M345 110 Q345 90 325 88 L325 175 L345 175 Z" fill={color} opacity="0.9" />
-      {/* Legs */}
-      <rect x="80" y="183" width="8" height="14" rx="2" fill={dark ? '#d8b36a' : '#3e2a20'} />
-      <rect x="312" y="183" width="8" height="14" rx="2" fill={dark ? '#d8b36a' : '#3e2a20'} />
-      <rect x="190" y="183" width="8" height="14" rx="2" fill={dark ? '#d8b36a' : '#3e2a20'} opacity="0.6" />
-
-      {/* Highlight */}
-      <path
-        d="M100 95 L300 95"
-        stroke={dark ? 'rgba(216,179,106,0.4)' : 'rgba(255,255,255,0.4)'}
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-    </svg>
   )
 }
 

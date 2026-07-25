@@ -60,15 +60,20 @@ export function Footer() {
       <div className="relative mx-auto max-w-[1400px] px-5 lg:px-10 py-14 lg:py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 lg:gap-10">
         {/* Brand */}
         <div className="col-span-2 lg:col-span-2">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7a5230] to-[#d8b36a] flex items-center justify-center text-white font-heading font-bold text-sm shadow-soft">
-              HR
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="relative w-11 h-11 rounded-full overflow-hidden shadow-soft ring-1 ring-white/20">
+              <img
+                src="/brand/monogram.svg"
+                alt=""
+                aria-hidden="true"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col leading-none">
               <span className="font-heading text-[16px] font-semibold tracking-tight text-white">
                 HR Furniture
               </span>
-              <span className="text-[10px] tracking-[0.18em] uppercase text-[#d8b36a]/80 mt-0.5 font-button">
+              <span className="text-[10px] tracking-[0.18em] uppercase text-[#d8b36a]/85 mt-0.5 font-button">
                 Premium Sofas
               </span>
             </div>

@@ -40,19 +40,26 @@ export function Navbar() {
       >
         <nav className="mx-auto max-w-[1400px] px-5 lg:px-10 flex items-center justify-between gap-4">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 group">
-            <div className="relative w-9 h-9 rounded-full bg-gradient-to-br from-[#7a5230] to-[#3e2a20] flex items-center justify-center text-white font-heading font-bold text-sm shadow-soft">
-              HR
-              <div className="absolute inset-0 rounded-full ring-1 ring-[#d8b36a]/40 group-hover:ring-[#d8b36a] transition-all duration-500" />
+          <a href="#home" className="flex items-center gap-2.5 group">
+            <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-soft ring-1 ring-white/30 group-hover:ring-white/60 transition-all duration-500">
+              <img
+                src="/brand/monogram.svg"
+                alt=""
+                aria-hidden="true"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col leading-none">
               <span className={cn(
                 'font-heading text-[15px] font-semibold tracking-tight transition-colors',
-                scrolled ? 'text-[#1d1d1d]' : 'text-[#1d1d1d]'
+                scrolled ? 'text-[#1d1d1d]' : 'text-white'
               )}>
                 HR Furniture
               </span>
-              <span className="text-[10px] tracking-[0.18em] uppercase text-[#5e5e5e] mt-0.5 font-button">
+              <span className={cn(
+                'text-[10px] tracking-[0.18em] uppercase mt-0.5 font-button transition-colors',
+                scrolled ? 'text-[#5e5e5e]' : 'text-white/70'
+              )}>
                 Premium Sofas
               </span>
             </div>
@@ -66,7 +73,7 @@ export function Navbar() {
                 href={link.href}
                 className={cn(
                   'text-[13px] font-button font-medium tracking-wide link-underline transition-colors',
-                  scrolled ? 'text-[#1d1d1d] hover:text-[#7a5230]' : 'text-[#1d1d1d] hover:text-[#7a5230]'
+                  scrolled ? 'text-[#1d1d1d] hover:text-[#7a5230]' : 'text-white/95 hover:text-white'
                 )}
               >
                 {link.label}
@@ -79,14 +86,20 @@ export function Navbar() {
             <button
               aria-label="Search"
               onClick={() => setSearchOpen((s) => !s)}
-              className="w-9 h-9 rounded-full flex items-center justify-center text-[#1d1d1d] hover:bg-[#7a5230]/10 transition-colors"
+              className={cn(
+                'w-9 h-9 rounded-full flex items-center justify-center transition-colors',
+                scrolled ? 'text-[#1d1d1d] hover:bg-[#7a5230]/10' : 'text-white hover:bg-white/15'
+              )}
             >
               <Search className="w-[18px] h-[18px]" strokeWidth={1.5} />
             </button>
             <a
               href="#cart"
               aria-label="Cart"
-              className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-[#1d1d1d] hover:bg-[#7a5230]/10 transition-colors relative"
+              className={cn(
+                'hidden sm:flex w-9 h-9 rounded-full items-center justify-center transition-colors relative',
+                scrolled ? 'text-[#1d1d1d] hover:bg-[#7a5230]/10' : 'text-white hover:bg-white/15'
+              )}
             >
               <ShoppingBag className="w-[18px] h-[18px]" strokeWidth={1.5} />
               <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#c88a5a] text-white text-[9px] font-button font-semibold flex items-center justify-center">
@@ -96,20 +109,31 @@ export function Navbar() {
             <a
               href={`tel:${siteConfig.phone}`}
               aria-label="Call"
-              className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-[#1d1d1d] hover:bg-[#7a5230]/10 transition-colors"
+              className={cn(
+                'hidden sm:flex w-9 h-9 rounded-full items-center justify-center transition-colors',
+                scrolled ? 'text-[#1d1d1d] hover:bg-[#7a5230]/10' : 'text-white hover:bg-white/15'
+              )}
             >
               <Phone className="w-[18px] h-[18px]" strokeWidth={1.5} />
             </a>
             <a
               href="#contact"
-              className="hidden md:inline-flex items-center gap-1.5 ml-2 px-4 h-9 rounded-full bg-[#3e2a20] text-white text-[12px] font-button font-medium tracking-wide hover:bg-[#6a4530] transition-all duration-300 hover:shadow-luxury"
+              className={cn(
+                'hidden md:inline-flex items-center gap-1.5 ml-2 px-4 h-9 rounded-full text-[12px] font-button font-medium tracking-wide transition-all duration-300',
+                scrolled
+                  ? 'bg-[#3e2a20] text-white hover:bg-[#6a4530] hover:shadow-luxury'
+                  : 'bg-white/15 backdrop-blur-md text-white border border-white/30 hover:bg-white/25'
+              )}
             >
               Book Consultation
             </a>
             <button
               aria-label="Open menu"
               onClick={() => setOpen(true)}
-              className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-[#1d1d1d] hover:bg-[#7a5230]/10 transition-colors"
+              className={cn(
+                'lg:hidden w-9 h-9 rounded-full flex items-center justify-center transition-colors',
+                scrolled ? 'text-[#1d1d1d] hover:bg-[#7a5230]/10' : 'text-white hover:bg-white/15'
+              )}
             >
               <Menu className="w-5 h-5" strokeWidth={1.5} />
             </button>
